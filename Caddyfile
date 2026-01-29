@@ -1,0 +1,7 @@
+invoices.gogofuels.com {
+    reverse_proxy ui:80
+}
+
+api.gogofuels.com {
+    reverse_proxy backend:5000
+}
