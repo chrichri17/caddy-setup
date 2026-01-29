@@ -1,0 +1,49 @@
+services:
+  backend-blue:
+    build: ../../backend
+    container_name: backend-blue
+    restart: unless-stopped
+    environment:
+      - FLASK_ENV=production
+
+  backend-green:
+    build: ../../backend
+    container_name: backend-green
+    restart: unless-stopped
+    environment:
+      - FLASK_ENV=production
+
+  webui-blue:
+    build: ../../ui
+    container_name: webui-blue
+    restart: unless-stopped
+    environment:
+      - VITE_ENV=production
+
+  webui-green:
+    build: ../../ui
+    container_name: webui-green
+    restart: unless-stopped
+    environment:
+      - VITE_ENV=production
+
+  caddy:
+    image: caddy:2
+    container_name: caddy-prod
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - backend-blue
+      - backend-green
+      - webui-blue
+      - webui-green
+
+volumes:
+  caddy_data:
+  caddy_config:

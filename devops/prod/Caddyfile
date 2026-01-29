@@ -1,0 +1,14 @@
+# 🔥 CHANGE THIS TO SWITCH VERSIONS
+# blue or green
+{$ACTIVE_VERSION}
+
+invoices.gogofuels.com {
+    @api path /api/*
+    reverse_proxy @api backend-{$ACTIVE_VERSION}:5000
+
+    reverse_proxy webui-{$ACTIVE_VERSION}:80
+}
+
+api.gogofuels.com {
+    reverse_proxy backend-{$ACTIVE_VERSION}:5000
+}
