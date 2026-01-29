@@ -1,6 +1,6 @@
 # 🔥 CHANGE THIS TO SWITCH VERSIONS
 # blue or green
-{$ACTIVE_VERSION}
+# {$ACTIVE_VERSION}
 
 invoices.gogofuels.com {
     @api path /api/*
