@@ -1,5 +1,10 @@
+sudo adduser devgogo
+sudo usermod -aG sudo devgogo
 sudo ufw allow OpenSSH
 sudo ufw enable
+
+# Optional (if root logged in via SSH)
+rsync --archive --chown=devgogo:devgogo ~/.ssh /home/devgogo
 
 # Setup docker
 # Add Docker's official GPG key:

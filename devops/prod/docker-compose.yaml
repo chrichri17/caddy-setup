@@ -31,6 +31,8 @@ services:
     image: caddy:2
     container_name: caddy-prod
     restart: unless-stopped
+    environment:
+      - ACTIVE_VERSION=${ACTIVE_VERSION:-blue}
     ports:
       - "80:80"
       - "443:443"
