@@ -1,4 +1,7 @@
 invoices.gogofuels.com {
+    @api path /api/*
+    reverse_proxy @api backend:5000
+
     reverse_proxy ui:80
 }
 
