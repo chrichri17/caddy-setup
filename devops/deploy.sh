@@ -128,6 +128,34 @@ get_inactive_version() {
     fi
 }
 
+# Update UI environment file
+update_ui_env() {
+    local env_type="$1"
+    local color="$2"
+    local ui_env_file="$PROJECT_ROOT/ui/.env"
+
+    log_info "Updating UI environment configuration..."
+
+    if [ "$env_type" = "staging" ]; then
+        cat > "$ui_env_file" <<EOF
+VITE_SERVER_ADDRESS=http://backend:5000
+EOF
+        log_info "UI configured for staging (backend:5000)"
+    elif [ "$env_type" = "prod" ]; then
+        if [ -z "$color" ]; then
+            log_error "Color must be specified for production deployment"
+            exit 1
+        fi
+        cat > "$ui_env_file" <<EOF
+VITE_SERVER_ADDRESS=http://backend-${color}:5000
+EOF
+        log_info "UI configured for production ${color} (backend-${color}:5000)"
+    else
+        log_error "Invalid environment type: $env_type"
+        exit 1
+    fi
+}
+
 # Show deployment status
 show_status() {
     log_info "Deployment Status for $ENV"
@@ -155,6 +183,9 @@ show_status() {
 # Deploy to staging
 deploy_staging() {
     log_info "Deploying to staging environment..."
+
+    # Update UI environment configuration
+    update_ui_env "staging"
 
     cd "$ENV_DIR"
 
@@ -203,6 +234,9 @@ deploy_production() {
 
     log_info "Deploying to production $deploy_color environment..."
     log_info "Current active version: $active"
+
+    # Update UI environment configuration
+    update_ui_env "prod" "$deploy_color"
 
     cd "$ENV_DIR"
 
